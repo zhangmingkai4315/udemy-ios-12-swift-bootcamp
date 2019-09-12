@@ -24,7 +24,10 @@ class TodoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 但是需要注意复用的时候，如果处理不当会导致cell状态也被复用
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell",for: indexPath)
-        cell.textLabel?.text = itemArray[indexPath.row ].name
+        let item = itemArray[indexPath.row]
+        cell.textLabel?.text = item.name
+        cell.accessoryType = item.checked == true ? .checkmark : .none
+        
         return cell
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -33,16 +36,13 @@ class TodoListViewController: UITableViewController {
     
     //MARK: - Table view delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        itemArray[indexPath.row].checked = !itemArray[indexPath.row].checked
         let item = tableView.cellForRow(at: indexPath)
-    
-        
         if item?.accessoryType == .checkmark{
             item?.accessoryType = .none
         }else{
             item?.accessoryType = .checkmark
         }
+        itemArray[indexPath.row].checked = !itemArray[indexPath.row].checked
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
